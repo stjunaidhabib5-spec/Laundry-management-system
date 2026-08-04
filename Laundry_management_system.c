@@ -5,4 +5,4 @@ struct customer{
     int roomNum;
     int laundry_count;
     int status;
-}
+}customer;
