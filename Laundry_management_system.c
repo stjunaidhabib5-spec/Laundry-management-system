@@ -2,15 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-// 1. Struct to hold the input data
+
 typedef struct {
     int room_num;
     char name[50];
     int num_clothes;
-    char status[20]; // e.g., "Unwashed", "Washed & Ironed"
+    char status[20]; // "Unwashed", "Washed & Ironed"
 } Laundry;
 
-// --- QUEUE IMPLEMENTATION (For Processing Laundry) ---
+
 typedef struct QueueNode {
     Laundry data;
     struct QueueNode* next;
@@ -48,7 +48,7 @@ int isQueueEmpty() {
     return front == NULL;
 }
 
-// --- BINARY SEARCH TREE IMPLEMENTATION (For Storage) ---
+
 typedef struct BSTNode {
     Laundry data;
     struct BSTNode* left;
@@ -62,13 +62,13 @@ BSTNode* insertBST(BSTNode* root, Laundry item) {
         newNode->left = newNode->right = NULL;
         return newNode;
     }
-    // Using Room Number as the key for the BST
+
     if (item.room_num < root->data.room_num) {
         root->left = insertBST(root->left, item);
     } else if (item.room_num > root->data.room_num) {
         root->right = insertBST(root->right, item);
     } else {
-        // If room already exists, just update the data (for simplicity)
+
         root->data = item;
     }
     return root;
@@ -84,8 +84,8 @@ BSTNode* searchBST(BSTNode* root, int room_num) {
     return searchBST(root->right, room_num);
 }
 
-// --- MAIN SYSTEM FUNCTIONS ---
-BSTNode* storageRoot = NULL; // Global BST Root
+
+BSTNode* storageRoot = NULL; 
 
 void receiveOrder() {
     Laundry newOrder;
@@ -93,7 +93,7 @@ void receiveOrder() {
     printf("Enter Room Number: ");
     scanf("%d", &newOrder.room_num);
     printf("Enter Name: ");
-    scanf(" %[^\n]s", newOrder.name); // Space before % to consume newline
+    scanf(" %[^\n]s", newOrder.name); 
     printf("Enter Number of Clothes: ");
     scanf("%d", &newOrder.num_clothes);
     strcpy(newOrder.status, "Unwashed");
@@ -108,15 +108,15 @@ void processLaundry() {
         return;
     }
     
-    // Dequeue from processing queue
+
     Laundry current = dequeue();
     
-    // Update status to Washed & Ironed
+
     strcpy(current.status, "Washed & Ironed");
     printf("\nProcessing Room %d's laundry...\n", current.room_num);
     printf("Washing and Ironing %d clothes...\n", current.num_clothes);
     
-    // Move to BST Storage
+
     storageRoot = insertBST(storageRoot, current);
     printf("Laundry for Room %d is now in STORAGE.\n", current.room_num);
 }
@@ -126,7 +126,7 @@ void checkStatus() {
     printf("\nEnter Room Number to check: ");
     scanf("%d", &room_to_search);
     
-    // First, check if it's in storage (BST)
+
     BSTNode* result = searchBST(storageRoot, room_to_search);
     if (result != NULL) {
         printf("\n--- Status: IN STORAGE ---\n");
@@ -136,7 +136,7 @@ void checkStatus() {
         return;
     }
     
-    // If not in BST, check if it's in the Queue
+
     QueueNode* temp = front;
     int position = 1;
     while (temp != NULL) {
@@ -154,12 +154,12 @@ void checkStatus() {
     printf("\nNo record found for Room %d.\n", room_to_search);
 }
 
-// --- MAIN MENU ---
+
 int main() {
     int choice;
     
     while (1) {
-        printf("\n==================================\n");
+        printf("\n===================================\n");
         printf("    LAUNDRY MANAGEMENT SYSTEM     \n");
         printf("==================================\n");
         printf("1. Take New Laundry (Enqueue)\n");
